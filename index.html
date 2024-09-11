@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			/* Table styling */
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin: 20px 0;
+				font-size: 18px;
+				text-align: left;
+			}
+
+			table,
+			th,
+			td {
+				border: 1px solid #dddddd;
+			}
+
+			th,
+			td {
+				padding: 12px 15px;
+			}
+
+			/* Header background color */
+			th {
+				background-color: #f2f2f2;
+				color: #333;
+			}
+		</style>
+
+	<body id="body">
+		<h1>check console</h1>
+
+		<script>
+			get_data();
+
+			async function get_data() {
+				try {
+					const response = await fetch("http://localhost:8000/api/expenses");
+					const data = await response.json();
+					console.log(data);
+					display_data(data);
+				} catch (err) {
+					console.error(err);
+				}
+			}
+
+			function display_data(response) {
+				console.log("Data received:", response);
+
+				const data = response.Expenses; // Access the "Expenses" array in the response
+
+				let table = document.createElement("table");
+				table.setAttribute("class", "table table-bordered");
+				let thead = document.createElement("thead");
+				let tbody = document.createElement("tbody");
+
+				table.appendChild(thead);
+				table.appendChild(tbody);
+
+				document.getElementById("body").appendChild(table);
+
+				// Create table headers based on the keys of the first object
+				let row_head = document.createElement("tr");
+				let heading_1 = document.createElement("th");
+				heading_1.innerHTML = "Category";
+				let heading_2 = document.createElement("th");
+				heading_2.innerHTML = "Merchant";
+				let heading_3 = document.createElement("th");
+				heading_3.innerHTML = "Amount";
+				let heading_4 = document.createElement("th");
+				heading_4.innerHTML = "ID";
+				let heading_5 = document.createElement("th");
+				heading_5.innerHTML = "Expense Date";
+
+				row_head.appendChild(heading_1);
+				row_head.appendChild(heading_2);
+				row_head.appendChild(heading_3);
+				row_head.appendChild(heading_4);
+				row_head.appendChild(heading_5);
+				thead.appendChild(row_head);
+
+				// Populate table rows with data from the "Expenses" array
+				for (let index in data) {
+					let row_data = document.createElement("tr");
+
+					let row_col_1 = document.createElement("td");
+					row_col_1.innerHTML = data[index].Category;
+
+					let row_col_2 = document.createElement("td");
+					row_col_2.innerHTML = data[index].Merchant;
+
+					let row_col_3 = document.createElement("td");
+					row_col_3.innerHTML = data[index].Amount;
+
+					let row_col_4 = document.createElement("td");
+					row_col_4.innerHTML = data[index].ID;
+
+					let row_col_5 = document.createElement("td");
+					row_col_5.innerHTML = data[index].Expense_Date;
+
+					row_data.appendChild(row_col_1);
+					row_data.appendChild(row_col_2);
+					row_data.appendChild(row_col_3);
+					row_data.appendChild(row_col_4);
+					row_data.appendChild(row_col_5);
+
+					tbody.appendChild(row_data);
+				}
+			}
+		</script>
+	</body>
+</html>

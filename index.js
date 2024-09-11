@@ -19,7 +19,8 @@ app.get("/api/expenses", (req, res) => {
 	fetch(url)
 		.then(async (response) => {
 			const data = await response.json();
-			console.log(data);
+			res.send(data)
+			return
 		})
 		.then((data) => res.json(data))
 		.catch((error) => res.status(500).json({ error: "Something went wrong!" }));
